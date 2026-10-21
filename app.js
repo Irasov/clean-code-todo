@@ -1,29 +1,20 @@
-const taskInput = document.getElementById("new-task"); //Add a new task.
-const addButton = document.getElementsByTagName("button")[0]; //first button
-const todoList = document.getElementById("incompleteTasks"); //ul of #incompleteTasks
-const completedList = document.getElementById("completed-tasks"); //completed-tasks
+const taskInput = document.getElementById("new-task");
+const addButton = document.getElementsByTagName("button")[0];
+const todoList = document.getElementById("incompleteTasks");
+const completedList = document.getElementById("completed-tasks");
 
-//New task list item
 const createNewTaskElement = function (taskString) {
   const listItem = document.createElement("li");
-
-  //input (checkbox)
-  const checkBox = document.createElement("input"); //checkbx
-  //label
-  const label = document.createElement("label"); //label
-  //input (text)
-  const editInput = document.createElement("input"); //text
-  //button.edit
-  const editButton = document.createElement("button"); //edit button
-
-  //button.delete
-  const deleteButton = document.createElement("button"); //delete button
-  const deleteButtonImg = document.createElement("img"); //delete button image
+  const checkBox = document.createElement("input");
+  const label = document.createElement("label");
+  const editInput = document.createElement("input");
+  const editButton = document.createElement("button");
+  const deleteButton = document.createElement("button");
+  const deleteButtonImg = document.createElement("img");
 
   label.innerText = taskString;
   label.className = "task";
 
-  //Each elements, needs appending
   checkBox.type = "checkbox";
   editInput.type = "text";
   editInput.className = "task";
@@ -35,7 +26,6 @@ const createNewTaskElement = function (taskString) {
   deleteButtonImg.src = "./remove.svg";
   deleteButton.appendChild(deleteButtonImg);
 
-  //and appending.
   listItem.appendChild(checkBox);
   listItem.appendChild(label);
   listItem.appendChild(editInput);
@@ -56,7 +46,7 @@ const addTask = function () {
   taskInput.value = "";
 };
 
-//Edit an existing task.
+//editTask
 
 const editTask = function () {
   const listItem = this.parentNode;
@@ -68,7 +58,6 @@ const editTask = function () {
   //If class of the parent is .editmode
   if (isEditMode) {
     //switch to .editmode
-    //label becomes the inputs value.
     label.innerText = editInput.value;
     editButton.innerText = "Edit";
   } else {
@@ -80,59 +69,42 @@ const editTask = function () {
   listItem.classList.toggle("editMode");
 };
 
-//Delete task.
+//deleteTask
 const deleteTask = function () {
   const listItem = this.parentNode;
   const ul = listItem.parentNode;
-  //Remove the parent list item from the ul.
   ul.removeChild(listItem);
 };
-
-//Mark task completed
 const moveTaskToCompleted = function () {
-  //Append the task list item to the #completed-tasks
   const listItem = this.parentNode;
   completedList.appendChild(listItem);
   bindTaskEvents(listItem, moveTaskToTodo);
 };
 
 const moveTaskToTodo = function () {
-  //Mark task as incomplete.
   //When the checkbox is unchecked
-  //Append the task list item to the #incompleteTasks.
   const listItem = this.parentNode;
   todoList.appendChild(listItem);
   bindTaskEvents(listItem, moveTaskToCompleted);
 };
 
-//The glue to hold it all together.
-
 //Set the click handler to the addTask function.
 addButton.addEventListener("click", addTask);
 
 const bindTaskEvents = function (taskListItem, onCheckboxChange) {
-  //select ListItems children
   const checkBox = taskListItem.querySelector("input[type=checkbox]");
   const editButton = taskListItem.querySelector("button.edit");
   const deleteButton = taskListItem.querySelector("button.delete");
 
-  //Bind editTask to edit button.
   editButton.onclick = editTask;
-  //Bind deleteTask to delete button.
   deleteButton.onclick = deleteTask;
-  //Bind moveTaskToCompleted to checkBoxEventHandler.
   checkBox.onchange = onCheckboxChange;
 };
 
-//cycle over todoList ul list items
-//for each list item
 for (let i = 0; i < todoList.children.length; i++) {
-  //bind events to list items chldren(tasksCompleted)
   bindTaskEvents(todoList.children[i], moveTaskToCompleted);
 }
 
-//cycle over completedList ul list items
 for (let i = 0; i < completedList.children.length; i++) {
-  //bind events to list items chldren(tasksIncompleted)
   bindTaskEvents(completedList.children[i], moveTaskToTodo);
 }
