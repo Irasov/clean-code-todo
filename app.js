@@ -1,7 +1,7 @@
 const taskInput = document.getElementById("new-task"); //Add a new task.
 const addButton = document.getElementsByTagName("button")[0]; //first button
-const incompleteTaskHolder = document.getElementById("incompleteTasks"); //ul of #incompleteTasks
-const completedTasksHolder = document.getElementById("completed-tasks"); //completed-tasks
+const todoList = document.getElementById("incompleteTasks"); //ul of #incompleteTasks
+const completedList = document.getElementById("completed-tasks"); //completed-tasks
 
 //New task list item
 const createNewTaskElement = function (taskString) {
@@ -49,9 +49,9 @@ const addTask = function () {
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
 
-  //Append listItem to incompleteTaskHolder
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  //Append listItem to todoList
+  todoList.appendChild(listItem);
+  bindTaskEvents(listItem, moveTaskToCompleted);
 
   taskInput.value = "";
 };
@@ -89,20 +89,20 @@ const deleteTask = function () {
 };
 
 //Mark task completed
-const taskCompleted = function () {
+const moveTaskToCompleted = function () {
   //Append the task list item to the #completed-tasks
   const listItem = this.parentNode;
-  completedTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
+  completedList.appendChild(listItem);
+  bindTaskEvents(listItem, moveTaskToTodo);
 };
 
-const taskIncomplete = function () {
+const moveTaskToTodo = function () {
   //Mark task as incomplete.
   //When the checkbox is unchecked
   //Append the task list item to the #incompleteTasks.
   const listItem = this.parentNode;
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  todoList.appendChild(listItem);
+  bindTaskEvents(listItem, moveTaskToCompleted);
 };
 
 //The glue to hold it all together.
@@ -120,19 +120,19 @@ const bindTaskEvents = function (taskListItem, onCheckboxChange) {
   editButton.onclick = editTask;
   //Bind deleteTask to delete button.
   deleteButton.onclick = deleteTask;
-  //Bind taskCompleted to checkBoxEventHandler.
+  //Bind moveTaskToCompleted to checkBoxEventHandler.
   checkBox.onchange = onCheckboxChange;
 };
 
-//cycle over incompleteTaskHolder ul list items
+//cycle over todoList ul list items
 //for each list item
-for (let i = 0; i < incompleteTaskHolder.children.length; i++) {
+for (let i = 0; i < todoList.children.length; i++) {
   //bind events to list items chldren(tasksCompleted)
-  bindTaskEvents(incompleteTaskHolder.children[i], taskCompleted);
+  bindTaskEvents(todoList.children[i], moveTaskToCompleted);
 }
 
-//cycle over completedTasksHolder ul list items
-for (let i = 0; i < completedTasksHolder.children.length; i++) {
+//cycle over completedList ul list items
+for (let i = 0; i < completedList.children.length; i++) {
   //bind events to list items chldren(tasksIncompleted)
-  bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
+  bindTaskEvents(completedList.children[i], moveTaskToTodo);
 }
