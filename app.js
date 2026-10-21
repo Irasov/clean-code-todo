@@ -35,19 +35,14 @@ const createNewTaskElement = function (taskString) {
 };
 
 const addTask = function () {
-  //Create a new list item with the text from the #new-task:
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
-
-  //Append listItem to todoList
   todoList.appendChild(listItem);
   bindTaskEvents(listItem, moveTaskToCompleted);
-
   taskInput.value = "";
 };
 
 //editTask
-
 const editTask = function () {
   const listItem = this.parentNode;
 
@@ -55,17 +50,13 @@ const editTask = function () {
   const label = listItem.querySelector("label");
   const editButton = listItem.querySelector(".edit");
   const isEditMode = listItem.classList.contains("editMode");
-  //If class of the parent is .editmode
   if (isEditMode) {
-    //switch to .editmode
     label.innerText = editInput.value;
     editButton.innerText = "Edit";
   } else {
     editInput.value = label.innerText;
     editButton.innerText = "Save";
   }
-
-  //toggle .editmode on the parent.
   listItem.classList.toggle("editMode");
 };
 
@@ -88,7 +79,6 @@ const moveTaskToTodo = function () {
   bindTaskEvents(listItem, moveTaskToCompleted);
 };
 
-//Set the click handler to the addTask function.
 addButton.addEventListener("click", addTask);
 
 const bindTaskEvents = function (taskListItem, onCheckboxChange) {
