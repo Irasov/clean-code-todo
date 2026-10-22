@@ -62,9 +62,7 @@ const editTask = function () {
 
 //deleteTask
 const deleteTask = function () {
-  const listItem = this.parentNode;
-  const ul = listItem.parentNode;
-  ul.removeChild(listItem);
+  this.parentNode.remove();
 };
 const moveTaskToCompleted = function () {
   const listItem = this.parentNode;
