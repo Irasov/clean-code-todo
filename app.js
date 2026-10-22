@@ -64,17 +64,18 @@ const editTask = function () {
 const deleteTask = function () {
   this.parentNode.remove();
 };
+
+const moveTask = function (listItem, targetList, onCheckboxChange) {
+  targetList.appendChild(listItem);
+  bindTaskEvents(listItem, onCheckboxChange);
+};
+
 const moveTaskToCompleted = function () {
-  const listItem = this.parentNode;
-  completedList.appendChild(listItem);
-  bindTaskEvents(listItem, moveTaskToTodo);
+  moveTask(this.parentNode, completedList, moveTaskToTodo);
 };
 
 const moveTaskToTodo = function () {
-  //When the checkbox is unchecked
-  const listItem = this.parentNode;
-  todoList.appendChild(listItem);
-  bindTaskEvents(listItem, moveTaskToCompleted);
+  moveTask(this.parentNode, todoList, moveTaskToCompleted);
 };
 
 addButton.addEventListener("click", addTask);
